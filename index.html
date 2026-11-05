@@ -1,251 +1,504 @@
 <!DOCTYPE html>
+
 <html lang="fr">
+
 <head>
+
 <meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Sharmaji · Carte / Menu</title>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;700&family=Hind:wght@400;500;600&display=swap">
+
 <style>
+
 :root{--bg:#f8f4f9;--card:#fff;--ink:#2b1636;--mut:#6e5a78;--acc:#b45309;--plum:#52205c;--line:#e6dbea;--bad:#b3261e;--ok:#1f7a4d}
+
 @media (prefers-color-scheme:dark){:root{--bg:#1d1026;--card:#2a1837;--ink:#f6eaf4;--mut:#b9a3c4;--acc:#f2a93b;--plum:#c98ad6;--line:#47305a;--bad:#ff8a80;--ok:#5fd39a}}
+
 *{box-sizing:border-box}
+
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Hind,system-ui,sans-serif}
+
 header{background:linear-gradient(170deg,#34123f,#52205c);color:#fff;text-align:center;padding:36px 20px 28px;position:relative}
+
 header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:repeating-linear-gradient(135deg,#f2a93b 0 6px,transparent 6px 12px);opacity:.5}
+
 .nm{color:#f2c27a;letter-spacing:.08em}
+
 h1{font:700 clamp(40px,9vw,72px)/1 Cormorant,serif;margin:2px 0 6px}
+.simulation-button{display:block;margin:12px auto 8px;padding:10px 28px;border:1px solid #f2c27a;border-radius:0;background:#f2a93b;color:#34123f;font:600 15px Hind;cursor:pointer}
+
 .sub{font:italic 500 20px Cormorant,serif;color:#ffe9bf;margin:0}
+
 .lang{position:absolute;top:14px;right:14px;display:flex;border:1px solid #fff;border-radius:99px;overflow:hidden}
+
 .lang button{border:0;background:none;color:#fff;padding:5px 12px;font:600 13px Hind;cursor:pointer}
+
 .lang button[aria-pressed=true]{background:#fff;color:#34123f}
+
 main{max-width:980px;margin:0 auto;padding:22px 16px 110px}
+
 .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
+
 .chips small{color:var(--mut)}
+
 .chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:5px 13px;font:500 14px Hind;cursor:pointer}
+
 .chip[aria-pressed=true]{background:var(--plum);border-color:var(--plum);color:#fff}
+
 .chip.ex[aria-pressed=true]{background:var(--bad);border-color:var(--bad)}
+
 @media (prefers-color-scheme:dark){.chip[aria-pressed=true]{color:#1d1026}}
+
 .course{font:700 28px Cormorant,serif;margin:26px 0 10px;color:var(--plum)}
+
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+
 .dish{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--acc);border-radius:12px;padding:16px;transition:transform .2s,box-shadow .2s}
+
 .dish:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(60,20,70,.14)}
+
 .dish.flash{outline:3px solid var(--acc)}
+
 .dish.dim{opacity:.4}
+
 .dish h3{font:700 23px/1.1 Cormorant,serif;margin:0}
+
 .reg{color:var(--acc);font-weight:600;font-size:14px;margin-bottom:6px}
+
 .dish p{margin:0 0 8px}
+
 .tags{display:flex;flex-wrap:wrap;gap:5px}
+
 .tag{font-size:12.5px;padding:2px 9px;border-radius:99px;background:color-mix(in srgb,var(--bad) 16%,transparent)}
+
 .tag.v{background:color-mix(in srgb,var(--ok) 20%,transparent)}
+
 .tag.i{background:none;border:1px dashed var(--mut);color:var(--mut)}
+
 .note{color:var(--mut);font-size:14px;margin-top:30px;text-align:center}
+
 .empty{color:var(--mut)}
+
 #hb{position:fixed;right:16px;bottom:16px;z-index:5;border:0;border-radius:99px;background:var(--acc);color:#1d1026;padding:12px 20px;font:700 16px Hind;box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:pointer}
+
 #hp{position:fixed;inset:0;z-index:10;display:none;background:rgba(20,8,28,.55)}
+
 #hp.on{display:block}
+
 .pan{position:absolute;right:0;top:0;bottom:0;width:min(420px,100%);background:var(--bg);overflow:auto;padding:22px 20px 40px;animation:sl .25s}
+
 @keyframes sl{from{transform:translateX(30px);opacity:0}}
+
 @media (prefers-reduced-motion:reduce){.pan{animation:none}.dish{transition:none}}
+
 .pan h2{font:700 28px Cormorant,serif;margin:0 0 4px;color:var(--plum)}
+
 .pan h4{font:700 19px Cormorant,serif;margin:22px 0 6px}
+
 .x{position:absolute;top:14px;right:14px;border:0;background:var(--line);color:var(--ink);width:36px;height:36px;border-radius:50%;font-size:16px;cursor:pointer}
+
 select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+
 dl{margin:0}dt{font-weight:600;margin-top:8px}dd{margin:0;color:var(--mut)}
+
 button:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
 #cm{max-height:250px;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px}
+
 .m{padding:9px 12px;border-radius:14px;max-width:90%;font-size:15px}
+
 .m.bot{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+
 .m.me{background:var(--plum);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+
 @media (prefers-color-scheme:dark){.m.me{color:#1d1026}}
+
 #cq{margin:10px 0 8px}#cq .chip{font-size:13px;text-align:left;font-family:Hind,system-ui,sans-serif}
+
 #cf{display:flex;gap:6px}
+
 #ci{flex:1;min-width:0;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+
 #cb{border:0;background:var(--acc);color:#1d1026;border-radius:10px;padding:0 16px;font:700 15px Hind;cursor:pointer}
+
 #cbtn{position:fixed;right:16px;bottom:16px;z-index:5;border:0;border-radius:99px;background:var(--plum);color:#fff;padding:12px 20px;font:700 16px Hind;box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:pointer}
+
 @media (prefers-color-scheme:dark){#cbtn{color:#1d1026}}
+
 #hb{right:auto;left:16px}
+
 #cw{position:fixed;right:16px;bottom:16px;z-index:12;width:min(380px,calc(100% - 32px));height:min(560px,calc(100% - 32px));background:var(--bg);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.35);display:none;flex-direction:column;overflow:hidden}
+
 #cw.on{display:flex;animation:sl .25s}
+
 .ch{display:flex;align-items:center;gap:10px;padding:12px 14px;background:linear-gradient(170deg,#34123f,#52205c);color:#fff}
+
 .ch div{flex:1;line-height:1.2}.ch small{display:block;color:#ffe9bf;font-size:12.5px}
+
 .ch button{border:0;background:rgba(255,255,255,.18);color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:15px}
+
 .av{width:30px;height:30px;border-radius:50%;background:color-mix(in srgb,var(--acc) 25%,var(--card));display:grid;place-items:center;font-size:16px;flex:none}
+
 .av.big{width:40px;height:40px;font-size:22px;background:rgba(255,255,255,.2)}
+
 #cm{flex:1;max-height:none;padding:14px 12px}
+
 .r{display:flex;gap:8px;align-items:flex-end;max-width:92%}
+
 .m.bot{max-width:none}
+
 #cq{padding:0 12px;margin:6px 0;display:flex;flex-wrap:wrap;gap:6px;max-height:96px;overflow:auto}
+
 #cf{padding:10px 12px 12px;border-top:1px solid var(--line)}
+
 .dots i{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:var(--mut);animation:bn 1s infinite}
+
 .dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+
 @keyframes bn{50%{transform:translateY(-4px);opacity:.4}}
+
 @media (prefers-reduced-motion:reduce){.dots i,#cw.on{animation:none}}
+
 @media (max-width:480px){#cw{right:0;bottom:0;width:100%;height:100%;border-radius:0}}
+
 </style>
+
 </head>
+
 <body>
+
 <header>
+
 <div class="lang"><button id="bfr" aria-pressed="true">FR</button><button id="ben" aria-pressed="false">EN</button></div>
+
 <div class="nm">नमस्ते</div>
+
 <h1>Sharmaji</h1>
+ <a class="custom-link" href="simulation.html">
+           <button class="simulation-button" type="button">SIMULATION</button>
+        </a>
 <p class="sub" id="sub"></p>
+
 </header>
+
 <main>
+
 <div class="chips" id="f1"></div>
+
 <div class="chips" id="f2"></div>
+
 <div class="chips" id="f3"></div>
+
 <div id="out"></div>
+
 <p class="note" id="note"></p>
+
 </main>
+
 <button id="hb"></button>
+
 <button id="cbtn"></button>
+
 <div id="cw" role="dialog" aria-label="Chat"><div class="ch"><span class="av big">🪔</span><div><b id="ct"></b><small id="cs"></small></div><button id="cr" title="Reset" aria-label="Reset">↺</button><button id="cc" aria-label="Close">✕</button></div><div id="cm" aria-live="polite"></div><div id="cq"></div><form id="cf"><input id="ci" autocomplete="off"><button id="cb" type="button"></button></form></div>
+
 <div id="hp"><div class="pan" role="dialog" aria-modal="true"><button class="x" id="hx" aria-label="Close">✕</button><div id="hc"></div></div></div>
+
 <script>
+
 const D=[
+
 {n:"Murgh Badami",r:"Hyderabad",c:"s",g:"meat",al:["dairy","almond"],i:[],fr:"Poulet tendre mariné au yaourt, sauce douce aux amandes et au safran.",en:"Tender yogurt-marinated chicken in a mild almond and saffron sauce."},
+
 {n:"Three Lentils Texture",r:"Uttar Pradesh",c:"s",g:"veg",v:2,al:["gluten"],i:[],fr:"Trois lentilles en purée, crackers au cumin, chutney d’herbes et tamarin.",en:"Three lentil purées, cumin crackers, herb chutney and tamarind."},
+
 {n:"Saint-Jacques Gunpowder",r:"Kerala & Tamil Nadu",c:"s",g:"sea",al:["sesame"],i:["mollusc"],fr:"Saint-Jacques snackées aux épices, chutney et sauce ananas-coco.",en:"Seared scallops in a spice crust, with pineapple chutney and coconut sauce."},
+
 {n:"Veg Seekh Kabab",r:"Uttar Pradesh & Lucknow",c:"s",g:"veg",v:1,al:["almond"],i:["celery"],fr:"Brochette de légumes et fruits secs aux épices douces, chutney menthe.",en:"Vegetable and dried fruit kabab with warm spices and mint chutney."},
+
 {n:"Shahi Keema Roti",r:"Uttar Pradesh & Delhi",c:"s",g:"meat",al:["dairy"],i:["gluten"],fr:"Paratha farci de bœuf épicé, raïta au concombre.",en:"Paratha bread stuffed with spiced beef, cucumber raita."},
+
 {n:"Xacuti Poulpe",r:"Goa",c:"s",g:"sea",al:[],i:["mollusc","gluten"],fr:"Poulpe grillé, semoule et sauce coco-piment de Goa.",en:"Grilled octopus, semolina and Goan coconut-chili sauce."},
+
 {n:"Dorade Kerala Roast",r:"Kerala",c:"m",g:"sea",al:["dairy"],i:["fish","mustard"],fr:"Dorade snackée, riz à la betterave, curry de poisson au lait de coco.",en:"Seared sea bream, beetroot rice, coconut fish curry."},
+
 {n:"Palak Paneer Pasanda",r:"Uttar Pradesh & Delhi",c:"m",g:"veg",v:1,al:["dairy"],i:[],fr:"Fromage paneer grillé à l’abricot sur crème d’épinards.",en:"Grilled paneer with apricot on creamy spinach."},
+
 {n:"Hyderabad Mighty Salin",r:"Hyderabad",c:"m",g:"veg",v:1,al:["dairy"],i:["mustard","celery"],fr:"Poivron rouge farci de légumes, sauce yaourt aux épices douces.",en:"Red pepper stuffed with vegetables, gently spiced yogurt sauce."},
+
 {n:"Murgh Ghee Roast",r:"Karnataka (Mangalore)",c:"m",g:"meat",al:["nuts","dairy"],i:[],fr:"Poulet laqué au beurre clarifié, aux épices et à la noix de cajou.",en:"Chicken glazed in spiced clarified butter and cashew."},
+
 {n:"Lamb Shahi Raan",r:"Uttar Pradesh, Lucknow & Delhi",c:"m",g:"meat",al:["dairy"],i:[],fr:"Épaule d’agneau cuite 8 heures, marinée au yaourt et à la cardamome.",en:"Lamb shoulder cooked 8 hours, marinated in yogurt and cardamom."},
+
 {n:"Dum Biryani",r:"Hyderabad – Andhra Pradesh",c:"m",g:"other",al:["dairy"],i:[],fr:"Riz safrané cuit à l’étouffée, épices entières et menthe.",en:"Saffron rice slow-sealed with whole spices and mint."}];
+
 const AL={dairy:["Produits laitiers","Dairy"],almond:["Amandes","Almonds"],nuts:["Fruits à coque","Tree nuts"],gluten:["Gluten","Gluten"],sesame:["Sésame","Sesame"],mollusc:["Mollusques","Molluscs"],fish:["Poisson","Fish"],mustard:["Moutarde","Mustard"],celery:["Céleri","Celery"]};
+
 const LX=[["Ghee","beurre clarifié","clarified butter"],["Paneer","fromage frais indien","fresh Indian cheese"],["Masala","mélange d’épices","spice blend"],["Dum","cuisson à l’étouffée dans une marmite fermée","slow cooking in a sealed pot"],["Raïta / Raita","yaourt frais, souvent au concombre","cooling yogurt sauce, often with cucumber"],["Korma","sauce douce et crémeuse","mild, creamy sauce"],["Chutney","condiment frais ou acidulé","fresh or tangy relish"],["Tandoori","mariné aux épices et cuit au four","spice-marinated and oven-cooked"],["Paratha","pain plat feuilleté","flaky flatbread"],["Keema","viande hachée","minced meat"],["Upma","semoule épicée","spiced semolina"],["Tamarin / Tamarind","fruit acidulé","tangy fruit"]];
+
 const TX={
+
 sub:["Carte · Menu","Menu · Carte"],
+
 all:["Tout","All"],meat:["Viande","Meat"],sea:["Mer","Seafood"],veg:["Végétarien","Vegetarian"],
+
 st:["Entrées","Starters"],ma:["Plats","Mains"],ex:["Je ne mange pas :","I avoid:"],
+
 vg:["Végétarien","Vegetarian"],vn:["Végane possible","Vegan option"],may:["peut contenir","may contain"],
+
 note:["Une allergie ? Prévenez votre serveur avant de commander. Les allergènes en pointillés ne figurent pas sur la carte officielle : nous les confirmons avec la cuisine.","Have an allergy? Tell your server before ordering. Dashed allergens are not on the official menu: we confirm them with the kitchen."],
+
 none:["Aucun plat ne correspond.","No dish matches."],help:["Aide","Help"],
+
 h1:["Aide","Help"],hl:["Lire la carte","How to read the menu"],
+
 lg:[["Allergène de la carte","Allergen on the menu"],["Peut contenir, à confirmer","May contain, to confirm"],["Végétarien","Vegetarian"]],
+
 see:["Voir un plat","Find a dish"],pick:["Choisir un plat…","Choose a dish…"],lex:["Petit lexique","Little glossary"],
+
 tip:["Dites à votre serveur si vous voulez moins de piment.","Tell your server if you would like less heat."]};
+
 let L="fr",S={c:"all",g:"any",ex:[]};
+
 const $=i=>document.getElementById(i),t=a=>L=="fr"?a[0]:a[1],k=()=>L=="fr"?0:1;
+
 function chip(txt,on,cls,fn){const b=document.createElement("button");b.className="chip "+(cls||"");b.textContent=txt;b.setAttribute("aria-pressed",on);b.onclick=fn;return b}
+
 function tags(d){let h="";if(d.v)h+=`<span class="tag v">${t(d.v==2?TX.vn:TX.vg)}</span>`;d.al.forEach(a=>h+=`<span class="tag">${AL[a][k()]}</span>`);d.i.forEach(a=>h+=`<span class="tag i">${AL[a][k()]}?</span>`);return h}
+
 function render(){
+
 const f1=$("f1"),f2=$("f2"),f3=$("f3");f1.innerHTML=f2.innerHTML=f3.innerHTML="";
+
 [["any","all"],["meat","meat"],["sea","sea"],["veg","veg"]].forEach(([v,x])=>f1.appendChild(chip(t(TX[x]),S.g==v,"",()=>{S.g=v;render()})));
+
 [["all","all"],["s","st"],["m","ma"]].forEach(([v,x])=>f2.appendChild(chip(t(TX[x]),S.c==v,"",()=>{S.c=v;render()})));
+
 const s=document.createElement("small");s.textContent=t(TX.ex);f3.appendChild(s);
+
 Object.keys(AL).forEach(a=>{const on=S.ex.includes(a);f3.appendChild(chip(AL[a][k()],on,"ex",()=>{S.ex=on?S.ex.filter(z=>z!=a):[...S.ex,a];render()}))});
+
 let h="",n=0;
+
 [["s","st"],["m","ma"]].forEach(([c,x])=>{
+
 if(S.c!="all"&&S.c!=c)return;
+
 const L2=D.filter(d=>d.c==c&&(S.g=="any"||(S.g=="veg"?d.v:d.g==S.g)));
+
 if(!L2.length)return;n+=L2.length;
+
 h+=`<h2 class="course">${t(TX[x])}</h2><div class="grid">`+L2.map(d=>{
+
 const bad=[...d.al,...d.i].some(a=>S.ex.includes(a));
+
 return `<article class="dish${bad?" dim":""}" id="d-${D.indexOf(d)}"><h3>${d.n}</h3><div class="reg">${d.r}</div><p>${L=="fr"?d.fr:d.en}</p><div class="tags">${tags(d)}</div></article>`}).join("")+"</div>"});
+
 $("out").innerHTML=n?h:`<p class="empty">${t(TX.none)}</p>`;
+
 $("note").textContent=t(TX.note);
+
 $("hb").textContent="? "+t(TX.help);
+
 $("sub").textContent=t(TX.sub);document.documentElement.lang=L;
+
 $("bfr").setAttribute("aria-pressed",L=="fr");$("ben").setAttribute("aria-pressed",L=="en");
+
 help()}
+
 function help(){
+
 $("hc").innerHTML=`<h2>${t(TX.h1)}</h2>
+
 <h4>${t(TX.see)}</h4><select id="hs"><option value="">${t(TX.pick)}</option>${D.map((d,i)=>`<option value="${i}">${d.n}</option>`).join("")}</select>
+
 <h4>${t(TX.hl)}</h4><div class="tags"><span class="tag">${t(TX.lg[0])}</span><span class="tag i">${t(TX.lg[1])}</span><span class="tag v">${t(TX.lg[2])}</span></div><p style="color:var(--mut)">${t(TX.tip)}</p>
+
 <h4>${t(TX.lex)}</h4><dl>${LX.map(x=>`<dt>${x[0]}</dt><dd>${x[1+k()]}</dd>`).join("")}</dl>`;
+
 $("hs").onchange=e=>{if(e.target.value==="")return;S={c:"all",g:"any",ex:S.ex};render();close();
+
 const el=$("d-"+e.target.value);el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),2200)};chatUI()}
+
 function close(){$("hp").classList.remove("on")}
+
 $("hb").onclick=()=>{$("hp").classList.add("on");$("hx").focus()};
+
 $("hx").onclick=close;$("hp").onclick=e=>{if(e.target.id=="hp")close()};
+
 document.addEventListener("keydown",e=>{if(e.key=="Escape")close()});
+
 $("bfr").onclick=()=>{L="fr";render()};$("ben").onclick=()=>{L="en";render()};
+
 /* ---------- Menu assistant ----------
-   Works offline: it answers ONLY from the data above (D, AL, LX).
-   Optional: set AI_ENDPOINT to your own server that calls an AI model. Never put an API key in this file.
-   Suggested system prompt for that server: "Answer only from the menu data you receive. If the question is not
-   directly about these dishes, say you can only answer questions about the menu. Never guess allergens; tell the guest to ask the server." */
+
+   Works offline: it answers ONLY from the data above (D, AL, LX).
+
+   Optional: set AI_ENDPOINT to your own server that calls an AI model. Never put an API key in this file.
+
+   Suggested system prompt for that server: "Answer only from the menu data you receive. If the question is not
+
+   directly about these dishes, say you can only answer questions about the menu. Never guess allergens; tell the guest to ask the server." */
+
 const AI_ENDPOINT="";let CTX=null;
+
 const CT={ask:["Posez votre question","Ask a question"],ph:["Ex. : du gluten dans le Biryani ?","e.g. Gluten in the Biryani?"],snd:["Envoyer","Send"],
+
 hi:["Bonjour ! Je réponds aux questions sur les plats de cette carte : ingrédients, allergènes, régions, options végétariennes.","Hello! I answer questions about the dishes on this menu: ingredients, allergens, regions, vegetarian options."],
+
 off:["Je peux seulement répondre aux questions directement liées aux plats de cette carte (ingrédients, allergènes, régions, végétarien…). Pour toute autre question, merci de demander à votre serveur.","I can only answer questions directly related to the dishes on this menu (ingredients, allergens, regions, vegetarian…). For anything else, please ask your server."],
+
 spice:["Le niveau de piment n’est pas indiqué sur la carte. Dites à votre serveur si vous souhaitez moins de piment.","The heat level is not listed on the menu. Tell your server if you would like less heat."],
+
 srv:["Confirmez toujours avec votre serveur en cas d’allergie.","Always confirm with your server if you have an allergy."],
+
 sg:[["Qu’y a-t-il dans le Murgh Badami ?","What is in the Murgh Badami?"],["Quels plats sont végétariens ?","Which dishes are vegetarian?"],["Quels plats sans gluten ?","Which dishes are gluten free?"],["C’est quoi le ghee ?","What is ghee?"]]};
+
 const nm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[’'\-]/g," ");
+
 const has=(n,w)=>w.some(x=>new RegExp("\\b"+x).test(n));
+
 const AK={dairy:["lait","dairy","lactose","fromage","milk","laitier","cream","creme"],almond:["amande","almond"],nuts:["noix","nut","cajou","cashew","fruits a coque"],gluten:["gluten","wheat","coeliaque","celiac","coeliac"],sesame:["sesame"],mollusc:["mollusque","mollusc","shellfish"],fish:["poisson","fish"],mustard:["moutarde","mustard"],celery:["celeri","celery"]};
+
 const DK=[["badami"],["lentil","lentille"],["jacques","gunpowder","scallop","coquille"],["seekh","kabab","kebab"],["keema","roti"],["xacuti","poulpe","octopus"],["dorade","bream","kerala"],["palak","pasanda","epinard","spinach"],["salin","mighty","poivron"],["ghee roast","murgh ghee"],["raan"],["biryani"]];
+
 const B=d=>"<b>"+d.n+"</b>",NB=a=>a.map(B).join(", ");
+
 function allergenLine(d){const a=d.al.map(x=>AL[x][k()]),i=d.i.map(x=>AL[x][k()]),f=L=="fr";
+
 let s=a.length?(f?"Allergènes sur la carte : ":"Allergens on the menu: ")+a.join(", ")+".":(f?"Aucun allergène listé sur la carte.":"No allergen listed on the menu.");
+
 if(i.length)s+=" "+(f?"Peut aussi en contenir (à confirmer) : ":"May also contain (to confirm): ")+i.join(", ")+".";
+
 return s+" "+t(CT.srv)}
+
 function local(q){
+
 const n=nm(q),f=L=="fr",o=(a,b)=>f?a:b;
+
 let di=DK.findIndex(a=>has(n,a));const lst=/\b(plats|dishes|liste|list|tous|toutes|all)\b/.test(n);
+
 if(di<0&&CTX!=null&&!lst&&/\b(it|this|that|ce|cette|il|elle|ca|cela)\b/.test(n)&&has(n,["veget","vegan","allerg","d ou","origine","where","region","from","vient","piquant","spicy","heat","contain","contient","ingredient","dedans","inside","compose","gluten","lait","dairy","nut","noix","amande","almond","sesame","poisson","fish"]))di=CTX;
+
 if(di>-1)CTX=di;const d=di>-1?D[di]:null;
+
 const ak=Object.keys(AK).find(a=>has(n,AK[a])),akn=ak?AL[ak][k()].toLowerCase():"";
+
 const ks=ak=="nuts"?["nuts","almond"]:[ak];
+
 const gl=LX.find(x=>has(n,x[0].split(" / ").map(nm)));
+
 const vegQ=has(n,["veget","vegan"]),spice=has(n,["piquant","pimente","spicy","hot","heat","piment"]);
+
 const pk=has(n,["poulet","chicken"])?["poulet","chicken"]:has(n,["boeuf","beef"])?["boeuf","beef"]:has(n,["agneau","lamb"])?["agneau","lamb"]:has(n,["poisson","fish"])?["poisson","fish"]:null;
+
 const sea=has(n,["fruits de mer","seafood"]),neg=has(n,["sans","without","free","pas de","no ","avoid","allergique","allergic"]);
+
 if(has(n,["recommand","suggest","conseil","what should","que choisir","que prendre"]))
- return o("Selon vos goûts. Viande : ","Depending on your taste. Meat: ")+NB(D.filter(x=>x.g=="meat"))+o(". Mer : ",". Seafood: ")+NB(D.filter(x=>x.g=="sea"))+o(". Végétarien : ",". Vegetarian: ")+NB(D.filter(x=>x.v))+".";
+
+ return o("Selon vos goûts. Viande : ","Depending on your taste. Meat: ")+NB(D.filter(x=>x.g=="meat"))+o(". Mer : ",". Seafood: ")+NB(D.filter(x=>x.g=="sea"))+o(". Végétarien : ",". Vegetarian: ")+NB(D.filter(x=>x.v))+".";
+
 if(d){
- if(ak&&!has(n,["quel","which"])){const x=ks.some(z=>d.al.includes(z)),y=ks.some(z=>d.i.includes(z));
-  return x?o(`Oui, ${B(d)} contient : ${akn} (indiqué sur la carte).`,`Yes, ${B(d)} contains ${akn} (listed on the menu).`)+" "+t(CT.srv)
-  :y?o(`${B(d)} peut en contenir (${akn}) : ce n’est pas listé sur la carte, à confirmer avec la cuisine.`,`${B(d)} may contain ${akn}: not listed on the menu, to be confirmed with the kitchen.`)+" "+t(CT.srv)
-  :o(`Aucun allergène « ${akn} » n’est indiqué pour ${B(d)}.`,`No ${akn} allergen is listed for ${B(d)}.`)+" "+t(CT.srv)}
- if(has(n,["allerg"]))return B(d)+" : "+allergenLine(d);
- if(vegQ)return d.v==2?o(`Oui, ${B(d)} est végétarien et peut être préparé végane.`,`Yes, ${B(d)} is vegetarian and can be made vegan.`):d.v?o(`Oui, ${B(d)} est végétarien.`,`Yes, ${B(d)} is vegetarian.`):d.g=="other"?o(`La carte ne précise pas si ${B(d)} est végétarien. Demandez à votre serveur.`,`The menu does not say whether ${B(d)} is vegetarian. Please ask your server.`):o(`Non, ${B(d)} n’est pas végétarien.`,`No, ${B(d)} is not vegetarian.`);
- if(spice)return t(CT.spice);
- if(has(n,["d ou","origine","where","region","from","vient"]))return o(`${B(d)} vient de la région : ${d.r}.`,`${B(d)} comes from: ${d.r}.`);
- return `${B(d)} (${d.r}) : ${f?d.fr:d.en}<br>${allergenLine(d)}`}
+
+ if(ak&&!has(n,["quel","which"])){const x=ks.some(z=>d.al.includes(z)),y=ks.some(z=>d.i.includes(z));
+
+  return x?o(`Oui, ${B(d)} contient : ${akn} (indiqué sur la carte).`,`Yes, ${B(d)} contains ${akn} (listed on the menu).`)+" "+t(CT.srv)
+
+  :y?o(`${B(d)} peut en contenir (${akn}) : ce n’est pas listé sur la carte, à confirmer avec la cuisine.`,`${B(d)} may contain ${akn}: not listed on the menu, to be confirmed with the kitchen.`)+" "+t(CT.srv)
+
+  :o(`Aucun allergène « ${akn} » n’est indiqué pour ${B(d)}.`,`No ${akn} allergen is listed for ${B(d)}.`)+" "+t(CT.srv)}
+
+ if(has(n,["allerg"]))return B(d)+" : "+allergenLine(d);
+
+ if(vegQ)return d.v==2?o(`Oui, ${B(d)} est végétarien et peut être préparé végane.`,`Yes, ${B(d)} is vegetarian and can be made vegan.`):d.v?o(`Oui, ${B(d)} est végétarien.`,`Yes, ${B(d)} is vegetarian.`):d.g=="other"?o(`La carte ne précise pas si ${B(d)} est végétarien. Demandez à votre serveur.`,`The menu does not say whether ${B(d)} is vegetarian. Please ask your server.`):o(`Non, ${B(d)} n’est pas végétarien.`,`No, ${B(d)} is not vegetarian.`);
+
+ if(spice)return t(CT.spice);
+
+ if(has(n,["d ou","origine","where","region","from","vient"]))return o(`${B(d)} vient de la région : ${d.r}.`,`${B(d)} comes from: ${d.r}.`);
+
+ return `${B(d)} (${d.r}) : ${f?d.fr:d.en}<br>${allergenLine(d)}`}
+
 if(vegQ)return o("Plats végétariens : ","Vegetarian dishes: ")+NB(D.filter(x=>x.v))+o(". Végane possible : ",". Vegan option: ")+NB(D.filter(x=>x.v==2))+".";
+
 if(ak&&neg){const s=D.filter(x=>!ks.some(z=>x.al.includes(z))&&!ks.some(z=>x.i.includes(z))),m=D.filter(x=>!ks.some(z=>x.al.includes(z))&&ks.some(z=>x.i.includes(z)));
- return o(`Sans ${akn} sur la carte : `,`With no ${akn} listed: `)+NB(s)+"."+(m.length?o(" À confirmer avec la cuisine : "," To confirm with the kitchen: ")+NB(m)+".":"")+" "+t(CT.srv)}
+
+ return o(`Sans ${akn} sur la carte : `,`With no ${akn} listed: `)+NB(s)+"."+(m.length?o(" À confirmer avec la cuisine : "," To confirm with the kitchen: ")+NB(m)+".":"")+" "+t(CT.srv)}
+
 if(ak){const w=D.filter(x=>ks.some(z=>x.al.includes(z))),m=D.filter(x=>!ks.some(z=>x.al.includes(z))&&ks.some(z=>x.i.includes(z)));
- return o(`Contiennent ${akn} (carte) : `,`Contain ${akn} (menu): `)+(w.length?NB(w):o("aucun","none"))+"."+(m.length?o(" Peuvent en contenir (à confirmer) : "," May contain (to confirm): ")+NB(m)+".":"")+" "+t(CT.srv)}
+
+ return o(`Contiennent ${akn} (carte) : `,`Contain ${akn} (menu): `)+(w.length?NB(w):o("aucun","none"))+"."+(m.length?o(" Peuvent en contenir (à confirmer) : "," May contain (to confirm): ")+NB(m)+".":"")+" "+t(CT.srv)}
+
 if(spice)return t(CT.spice);
+
 if(pk||sea){const r=D.filter(x=>sea?x.g=="sea":pk.some(w=>nm(x.fr+" "+x.en).includes(w)));if(r.length)return NB(r)+"."}
+
 if(has(n,["entree","starter"]))return o("Entrées : ","Starters: ")+NB(D.filter(x=>x.c=="s"))+".";
+
 if(has(n,["main","plats principaux"]))return o("Plats : ","Mains: ")+NB(D.filter(x=>x.c=="m"))+".";
+
 if(gl)return `<b>${gl[0]}</b> : ${gl[1+k()]}.`;
+
 if(spice)return t(CT.spice);
+
 if(has(n,["bonjour","salut","hello","hi","hey","merci","thank"]))return t(CT.hi);
+
 return t(CT.off)}
-const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&","<":"<",">":">"}[c]));
+
 async function ask(q){
- if(AI_ENDPOINT){try{const r=await fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q,lang:L,menu:D,glossary:LX})});const j=await r.json();if(j.answer)return esc(j.answer)}catch(e){}}
- return local(q)}
+
+ if(AI_ENDPOINT){try{const r=await fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q,lang:L,menu:D,glossary:LX})});const j=await r.json();if(j.answer)return esc(j.answer)}catch(e){}}
+
+ return local(q)}
+
 Object.assign(CT,{nm:["Assistant Sharmaji","Sharmaji Assistant"],sb:["Je réponds aux questions sur la carte","I answer questions about the menu"],chat:["Chat","Chat"],
+
 hi:["Namaste ! Je suis l’assistant de Sharmaji. Demandez-moi ce qu’il y a dans un plat, ses allergènes, son origine, ou quels plats sont végétariens.","Namaste! I’m the Sharmaji assistant. Ask me what is in a dish, its allergens, where it comes from, or which dishes are vegetarian."]});
+
 const FU=[["Est-il végétarien ?","Is it vegetarian?"],["Quels allergènes contient-il ?","What allergens does it have?"],["D’où vient-il ?","Where is it from?"]];
+
 let H=[],busy=0;
+
 function chatUI(){
- if(!H.length)H.push({b:1,h:""});if(H.length==1)H[0].h=t(CT.hi);
- $("ct").textContent=t(CT.nm);$("cs").textContent=t(CT.sb);$("cbtn").textContent="💬 "+t(CT.chat);
- const cm=$("cm");cm.innerHTML=H.map(m=>m.b?`<div class="r"><span class="av">🪔</span><div class="m bot">${m.t?'<span class="dots"><i></i><i></i><i></i></span>':m.h}</div></div>`:`<div class="m me">${m.h}</div>`).join("");cm.scrollTop=cm.scrollHeight;
- const q=$("cq");q.innerHTML="";(CTX!=null?FU:CT.sg).forEach(s=>q.appendChild(chip(s[k()],false,"",()=>send(s[k()]))));
- $("ci").placeholder=t(CT.ph);$("cb").textContent=t(CT.snd);
- $("cf").onsubmit=e=>{e.preventDefault();submitChat()};$("cb").onclick=e=>{e.preventDefault();submitChat()};$("ci").onkeydown=e=>{if(e.key=="Enter"){e.preventDefault();submitChat()}}}
+
+ if(!H.length)H.push({b:1,h:""});if(H.length==1)H[0].h=t(CT.hi);
+
+ $("ct").textContent=t(CT.nm);$("cs").textContent=t(CT.sb);$("cbtn").textContent="💬 "+t(CT.chat);
+
+ const cm=$("cm");cm.innerHTML=H.map(m=>m.b?`<div class="r"><span class="av">🪔</span><div class="m bot">${m.t?'<span class="dots"><i></i><i></i><i></i></span>':m.h}</div></div>`:`<div class="m me">${m.h}</div>`).join("");cm.scrollTop=cm.scrollHeight;
+
+ const q=$("cq");q.innerHTML="";(CTX!=null?FU:CT.sg).forEach(s=>q.appendChild(chip(s[k()],false,"",()=>send(s[k()]))));
+
+ $("ci").placeholder=t(CT.ph);$("cb").textContent=t(CT.snd);
+
+ $("cf").onsubmit=e=>{e.preventDefault();submitChat()};$("cb").onclick=e=>{e.preventDefault();submitChat()};$("ci").onkeydown=e=>{if(e.key=="Enter"){e.preventDefault();submitChat()}}}
+
 async function send(q){if(busy)return;busy=1;H.push({h:esc(q)});H.push({b:1,t:1});chatUI();let a;
- try{await new Promise(r=>setTimeout(r,450));a=await ask(q)}catch(e){a=t(CT.off)}
- finally{busy=0}
- H=H.filter(m=>!m.t);H.push({b:1,h:a||t(CT.off)});chatUI()}
+
+ try{await new Promise(r=>setTimeout(r,450));a=await ask(q)}catch(e){a=t(CT.off)}
+
+ finally{busy=0}
+
+ H=H.filter(m=>!m.t);H.push({b:1,h:a||t(CT.off)});chatUI()}
+
 function submitChat(){const v=$("ci").value.trim();if(v){$("ci").value="";send(v)}}
+
 $("cbtn").onclick=()=>{$("cw").classList.add("on");$("ci").focus()};
+
 $("cc").onclick=()=>$("cw").classList.remove("on");
+
 $("cr").onclick=()=>{H=[];CTX=null;chatUI()};
+
 document.addEventListener("keydown",e=>{if(e.key=="Escape")$("cw").classList.remove("on")});
+
 render();
+
 </script>
+
 </body>
+
 </html>
